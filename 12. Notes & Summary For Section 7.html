@@ -1,0 +1,27 @@
+<p><strong></strong></p><p><strong>Notes for section 7:</strong></p>
+
+<p>Object oriented programming in Python.Python has been an object-oriented language since it existed.<br> Because of this, creating and using classes and objects are downright easy. <br><strong> <br>OOP Terminology</strong></p>
+
+<p><strong>Class: </strong>A user-defined prototype for an object that defines a set of attributes that characterize any object of the class. The attributes are data members (class variables and instance variables) and methods, accessed via dot notation.</p>
+
+<p><strong>Class variable:</strong> A variable that is shared by all instances of a class. Class variables are defined within a class but outside any of the class's methods. Class variables are not used as frequently as instance variables are. <br><strong> <br>Inheritance:</strong> The transfer of the characteristics of a class to other classes that are derived from it.</p>
+
+<p><strong>Instance:</strong> An individual object of a certain class. An object obj that belongs to a class Circle, for example, is an instance of the class Circle.</p>
+
+<p><strong>Instantiation:</strong> The creation of an instance of a class.</p>
+
+<p><strong>Method:</strong> A special kind of function that is defined in a class definition.</p>
+
+<p>Object: A unique instance of a data structure that's defined by its class. An object comprises both data members (class variables and instance variables) and methods. <br> </p><p><br><strong> Recursion In Python:</strong><br> Recursion is a way of programming or coding a problem, in which a function calls  itself one or more times in its body. Usually, it is returning the return value of this function call. If a function definition fulfils the condition of recursion, we  call this function a recursive function.</p>
+
+<p><strong> Recursive Functions in Python</strong><br><strong> Example</strong><br> def factorial(n):<br>    if n == 1:<br>        return 1<br>    else:<br>        return n * factorial(n-1)<br><strong>        <br>Sets in Python:</strong><br>A set contains an unordered collection of unique and immutable objects. The set data type is,  as the name implies, a Python implementation of the sets as they are known from mathematics. This explains, why sets unlike lists or tuples can't have multiple  occurrences of the same element. </p><p><br><strong> <br>Operator overloading:</strong><br>The assignment of more than one function to a particular operator.Suppose you have created a Vector class to represent two-dimensional vectors, what happens when you use the plus operator to add them? Most likely Python will yell at you.</p>
+
+<p>You could, however, define the __add__ method in your class to perform vector addition and then the plus operator would behave as per expectation −<br><strong><br></strong></p><p><strong>Example</strong></p><p>class Vector:<br>   def __init__(self, a, b):<br>      self.a = a<br>      self.b = b</p>
+
+<p>   def __str__(self):<br>      return 'Vector (%d, %d)' % (self.a, self.b)<br>   <br>   def __add__(self,other):<br>      return Vector(self.a + other.a, self.b + other.b)</p>
+
+<p>v1 = Vector(2,10)<br>v2 = Vector(5,-2)<br>print v1 + v2</p>
+
+<p>When the above code is executed, it produces the following result −</p>
+
+<p>Vector(7,8)</p>

@@ -1,0 +1,246 @@
+<p>This is the entire code for the Django project which works perfectly on my side and is free of any errors.</p><p><br></p><p>models.py:</p><pre class="prettyprint linenums">from django.db import models
+from django.core.urlresolvers import reverse
+ 
+class Book(models.Model):
+ 
+    def get_absoulte_url(self):
+        return reverse('books:detail', kwargs={'pk':self.pk})
+ 
+    def __str__(self):
+        return self.name + '-' + self.author
+ 
+    name = models.CharField(max_length=100)
+    author = models.CharField(max_length=100)
+    price = models.CharField(max_length=100)
+    type = models.CharField(max_length=100)
+    book_image = models.CharField(max_length=1000)
+   </pre><p><br></p><p>urls.py:</p><pre class="prettyprint linenums">Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
+"""
+from django.conf.urls import include,url
+from django.contrib import admin
+ 
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^books/', include('books.urls')),
+]</pre><p><br></p><p>views.py:</p><pre class="prettyprint linenums">from django.views import generic
+from .models import Book
+from django.views.generic.edit import CreateView
+ 
+ 
+class IndexView(generic.ListView):
+    template_name = 'books/index.html'
+ 
+ 
+    def get_queryset(self):
+        return Book.objects.all()
+ 
+class BookCreate(CreateView):
+    model = Book
+    fields = ['name', 'author', 'price', 'type', 'book_image']
+ 
+ 
+class DetailView(generic.DetailView):
+    model = Book
+    template_name = 'books/detail.html'</pre><p><br></p><p>style.css:</p><pre class="prettyprint linenums">body{
+ 
+   //background: white url("images/back.jpg");
+}
+.jumbotron{
+ 
+   background: white url("images/yellow.jpg");
+}
+.jumbotron-special{
+ 
+   background: white url("images/purple.jpg");
+ 
+}
+.jumbotron-special h2{
+ 
+   color:white;
+}</pre><p><br></p><p>detail.html</p><pre class="prettyprint linenums">{% extends 'books/base.html' %}
+{% block body %}
+ 
+&lt;!--old code
+&lt;img src="{‌{book.book_image}}"/&gt;
+&lt;h1&gt;{‌{book.name}}&lt;/h1&gt;
+&lt;h2&gt;{‌{book.author}}&lt;/h2&gt;
+&lt;h2&gt;{‌{book.price}}&lt;/h2&gt;
+&lt;h2&gt;{‌{book.type}}&lt;/h2&gt;
+ 
+ 
+old code
+--&gt;
+ 
+&lt;div class="col-lg-3 col-md-4 col-sm-6 " &gt;
+      &lt;div class = "thumbnail"&gt;
+           &lt;img src = "{‌{book.book_image}}" alt = "Generic placeholder thumbnail"&gt;
+        
+      
+         &lt;div class = "caption"&gt;
+          &lt;h3&gt;{‌{book.name}}&lt;/h3&gt;
+          &lt;p&gt;{‌{book.author}}&lt;/p&gt;
+           &lt;p&gt;&lt;/p&gt;
+         &lt;/div&gt;
+      &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;div class="col-lg-9 col-md-4 col-sm-6 " &gt;
+      &lt;div class="" &gt;
+                   
+      
+         
+          &lt;h3&gt;&lt;b&gt;{‌{book.name}}&lt;/b&gt;&lt;/h3&gt;
+          &lt;p&gt;&lt;b&gt;Author:&lt;/b&gt; {‌{book.author}}&lt;/p&gt;
+           &lt;p&gt;&lt;b&gt;Price:&lt;/b&gt; {‌{book.price}}$&lt;/p&gt;
+           &lt;p&gt;&lt;b&gt;Category:&lt;/b&gt; {‌{book.type}}&lt;/p&gt;
+ 
+            &lt;a href = "#" class = "btn btn-danger" role = "button"&gt;
+                 Read Sample &lt;span class="glyphicon glyphicon-book"&gt;&lt;/span&gt;
+              &lt;/a&gt;
+ 
+         
+      &lt;/div&gt;
+&lt;/div&gt;
+ 
+ 
+ 
+{% endblock %}</pre><p><br></p><p>index.html:</p><pre class="prettyprint linenums">{% extends 'books/base.html' %}
+ {% block body %}
+&lt;link rel="stylesheet" type="text/css" href="books/style.css"&gt;
+&lt;div class=" col-md-12 jumbotron"&gt;
+  &lt;h1&gt;The Bookstore&lt;/h1&gt;
+  &lt;p&gt;Collection of all popular books&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=" col-md-10 jumbotron jumbotron-special" name="fig"&gt;
+   &lt;div class="col-md-12 span-2"&gt;
+  &lt;h2&gt;Popular Books&lt;/h2&gt;
+ 
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;ul&gt;
+   {% for book in object_list %}
+   &lt;!--&lt;li&gt;&lt;a href="{% url 'books:detail' book.id %}"&gt;{‌{book.name}}&lt;/a&gt;&lt;/li&gt;
+   &lt;img src="{‌{book.book_image}}"/&gt;--&gt;
+ 
+   &lt;!--new code starts here--&gt;
+   &lt;div class="col-lg-3 col-md-4 col-sm-6 " &gt;
+      &lt;div class = "thumbnail"&gt;
+         &lt;img src = "{‌{book.book_image}}" alt = "Generic placeholder thumbnail"&gt;
+ 
+ 
+         &lt;div class = "caption"&gt;
+          &lt;h3&gt;{‌{book.name}}&lt;/h3&gt;
+          &lt;p&gt;{‌{book.author}}&lt;/p&gt;
+ 
+          &lt;p&gt;
+             &lt;a href = "{% url 'books:detail' book.id %}" class = "btn btn-primary" role = "button"&gt;
+                Details
+              &lt;/a&gt;
+ 
+              &lt;a href = "#" class = "btn btn-danger" role = "button"&gt;
+                 Delete
+              &lt;/a&gt;
+         &lt;/p&gt;
+         &lt;/div&gt;
+      &lt;/div&gt;
+ 
+ 
+   &lt;/div&gt;
+   &lt;!--new code ends here--&gt;
+   {% endfor %}
+&lt;/ul&gt;
+{% endblock %}</pre><p><br></p><p>base.html:</p><pre class="prettyprint linenums">{% load staticfiles %}
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Title&lt;/title&gt;
+    &lt;link rel="stylesheet" type="text/css" href="{% static 'books/style.css' %}" &gt;
+        &lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class="navbar navbar-inverse"&gt;
+            &lt;div class="container-fluid"&gt;
+                &lt;a class="navbar-brand" href="{% url 'books:index' %}"&gt;The Bookstore&lt;/a&gt;
+                &lt;div class="collapse navbar-collapse"&gt;
+                &lt;ul class="nav navbar-nav"&gt;
+                    &lt;li class=""&gt;
+                        &lt;a href="{% url 'books:index' %}"&gt;
+                             &lt;span class="glyphicon glyphicon-book" aria-hidden="true"&gt;&lt;/span&gt;  Books
+                        &lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+                &lt;ul class="nav navbar-nav navbar-right"&gt;
+                    &lt;li class=""&gt;
+                        &lt;a href="{% url 'books:book-add' %}"&gt;
+                            &lt;span class="glyphicon glyphicon-plus-sign" aria-hidden="true"&gt;&lt;/span&gt;  Add Book
+                        &lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=""&gt;
+                        &lt;a href="{% url 'books:index' %}"&gt;
+                            &lt;span class="glyphicon glyphicon-log-out" aria-hidden="true"&gt;&lt;/span&gt;  Logout
+                        &lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+ 
+            &lt;/div&gt;
+            &lt;/div&gt;
+ 
+ 
+       &lt;/nav&gt;
+        {% block body %}
+        {% endblock %}
+ 
+&lt;/body&gt;
+&lt;/html&gt;</pre><p><br></p><p>books\urls.py:</p><pre class="prettyprint linenums">from django.conf.urls import url
+from django.contrib import admin
+from . import views
+ 
+app_name = 'books'
+ 
+urlpatterns = [
+ 
+    url(r'^$', views.IndexView.as_view(), name='index'),
+    #/books/2/
+    url(r'^(?P&lt;pk&gt;[0-9]+)/$', views.DetailView.as_view(), name='detail'),
+    url(r'books/add/$', views.BookCreate.as_view(), name='book-add'),
+]</pre><p><br></p><p>book_form.html:</p><pre class="prettyprint linenums">{% extends 'books/base.html' %}
+ 
+{% block body %}
+ 
+    &lt;div class="container-fluid"&gt;
+   &lt;div class="row"&gt;
+      &lt;div class="col-sm-12 col-md-7"&gt;
+         &lt;div class="panel panel-default"&gt;
+            &lt;div class="panel-body"&gt;
+ 
+                    &lt;form class="form-horizontal" action="" method="post" enctype="multipart/form-data"&gt;
+                        {% csrf_token %}
+                        {% include 'books/form-template.html' %}
+                        &lt;div class="form-group"&gt;
+                            &lt;div class="col-sm-offset-2 col-sm-10"&gt;
+                                &lt;button type="submit" class="btn btn-sucess"&gt;Submit&lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/form&gt;
+ 
+ 
+            &lt;/div&gt;
+         &lt;/div&gt;
+      &lt;/div&gt;
+   &lt;/div&gt;
+&lt;/div&gt;
+ 
+{% endblock %}</pre><p><br></p><p>form-template.html:</p><pre class="prettyprint linenums">{% for field in form %}
+    &lt;div class="form-group"&gt;
+        &lt;div class="col-sm-offset-2 col-sm-10"&gt;
+            &lt;span class="text-danger small "&gt;{‌{field.errors}}&lt;/span&gt;
+ 
+        &lt;/div&gt;
+        &lt;label class="control-label col-sm-2"&gt;{‌{field.label_tag}}&lt;/label&gt;
+        &lt;div class="col-sm-10"&gt;{‌{field}}&lt;/div&gt;
+ 
+    &lt;/div&gt;
+{% endfor %}</pre><p><br></p>

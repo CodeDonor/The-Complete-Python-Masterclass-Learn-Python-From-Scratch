@@ -1,0 +1,13 @@
+<p>Solution for coding challenge 11</p>
+
+<p><br></p>
+
+<pre class="prettyprint linenums">def discount(price):
+    price = price - (price * 10) / 100
+    return price
+
+product_prices = [100, 200, 300, 400, 500]
+
+updated_prices = list(map(discount,product_prices))
+
+print(updated_prices)</pre>
